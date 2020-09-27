@@ -1,0 +1,11 @@
+default:
+  rarity:
+    common:
+      chance: 80
+      items:
+    epic:
+      chance: 80
+      items:
+    legendary:
+      chance: 80
+      items:

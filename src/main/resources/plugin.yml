@@ -1,0 +1,9 @@
+name: AryCrates
+version: ${project.version}
+main: me.arythite.arycrate.Main
+authors: [ Arythite ]
+description: Customizable Crates
+commands:
+  crate:
+    aliases: [ ac ]
+    description: crate command

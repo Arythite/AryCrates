@@ -1,0 +1,5 @@
+default:
+  loot-table: default
+  display-name: henry
+  crate-name: defaulthenry
+  locations: []
