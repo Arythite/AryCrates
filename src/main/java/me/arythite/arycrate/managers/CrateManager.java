@@ -5,11 +5,9 @@ import me.arythite.arycrate.config.configs.CrateConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.block.Chest;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class CrateManager {
 
@@ -28,8 +26,7 @@ public class CrateManager {
     }
 
     public CrateManager() {
-
-    };
+    }
 
     List<Crate> crates = new ArrayList<>();
 
@@ -40,8 +37,8 @@ public class CrateManager {
         }
         config.get().getConfigurationSection("").getKeys(false).forEach((crate) -> {
             config.get().getConfigurationSection(crate).getKeys(false).forEach((info) -> {
-                final String path = crate.toString() + "." + info.toString();
-                switch (info.toString()) {
+                final String path = crate + "." + info;
+                switch (info) {
                     case "display-name":
                         displayName = config.get().get(path).toString();
                         break;
@@ -63,8 +60,8 @@ public class CrateManager {
                                 .forEach((location) -> locations.add(deserializeLocation((String) location)));
                         break;
                 }
-                crates.add(new Crate(crateName, displayName, lootTable, animation, keyName, locations));
             });
+            crates.add(new Crate(displayName, crateName, lootTable, animation, keyName, locations));
         });
         System.out.println("Done loading up crates");
     }
@@ -90,6 +87,10 @@ public class CrateManager {
             }
         }
         return null;
+    }
+
+    public List<Crate> getCrates() {
+        return crates;
     }
 
 }

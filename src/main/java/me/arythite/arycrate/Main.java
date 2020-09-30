@@ -3,6 +3,7 @@ package me.arythite.arycrate;
 import me.arythite.arycrate.commands.CommandManager;
 import me.arythite.arycrate.config.configs.CrateConfig;
 import me.arythite.arycrate.config.configs.RarityConfig;
+import me.arythite.arycrate.listeners.CrateListener;
 import me.arythite.arycrate.listeners.MenuListener;
 import me.arythite.arycrate.managers.CrateManager;
 import me.arythite.arycrate.managers.LootManager;
@@ -18,10 +19,9 @@ public final class Main extends JavaPlugin {
     private static final Map<Player, PlayerMenuUtility> playerMenuUtilityMap = new HashMap<>();
 
     RarityConfig rConfig = new RarityConfig(this);
+    LootManager lootManager = new LootManager(rConfig);
     CrateConfig cConfig = new CrateConfig(this);
     CrateManager cManager = new CrateManager(cConfig);
-
-    LootManager lootManager = new LootManager(rConfig);
 
     @Override
     public void onEnable() {
@@ -29,6 +29,8 @@ public final class Main extends JavaPlugin {
         loadItems();
         getCommand("crate").setExecutor(new CommandManager(this));
         getServer().getPluginManager().registerEvents(new MenuListener(), this);
+        getServer().getPluginManager().registerEvents(new CrateListener(cManager, lootManager, this), this);
+        lootManager.getRarityList("default");
     }
 
     @Override

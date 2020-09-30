@@ -7,8 +7,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Objects;
-
 public class CrateMenu extends Menu {
 
     public CrateMenu(PlayerMenuUtility playerMenuUtility) {
@@ -28,7 +26,7 @@ public class CrateMenu extends Menu {
     @Override
     public void handleMenu(InventoryClickEvent e) {
 
-        switch(Objects.requireNonNull(e.getCurrentItem()).getType()) {
+        switch ((e.getCurrentItem()).getType()) {
             case CHEST:
             case GLASS:
                 e.setCancelled(true);

@@ -38,10 +38,7 @@ public class LootManager {
 
         for (String lT : config.get().getConfigurationSection("").getKeys(false)) {
             // Do this for every lootTable
-            if (config.get().getConfigurationSection(lT).isSet(lT + ".rarity")) {
-                rarities.put(lT, config.get().getConfigurationSection(lT + ".rarity").getKeys(false).toArray(new String[0]));
-            }
-
+            rarities.put(lT, config.get().getConfigurationSection(lT + ".rarity").getKeys(false).toArray(new String[0]));
             if (!rarities.isEmpty()) {
                 // Do this if lootTable contains rarities
                 for (String r : rarities.get(lT)) {
@@ -68,10 +65,8 @@ public class LootManager {
 
             rarityInstances.put(lT, instances.toArray(new String[0]));
             totalChance.put(lT, t);
-
             masterTable.put(lT, lootTables);
         }
-
         System.out.println("Done loading up loot tables");
     }
 
@@ -79,10 +74,57 @@ public class LootManager {
 
         Map<String, ItemStack[]> table = masterTable.get(lT);
 
+        if (table == null) {
+            System.out.println("Loot table is empty");
+            return null;
+        }
+
         String rarity = rarityInstances.get(lT)[nextInt(totalChance.get(lT))];
-
         return table.get(rarity)[nextInt(table.get(rarity).length)];
-
     }
 
+    public ItemStack getItemFromRarity(String lT, String rarity) {
+
+        Map<String, ItemStack[]> table = masterTable.get(lT);
+
+        if (table == null) {
+            System.out.println("Loot table is empty");
+            return null;
+        }
+
+        return table.get(rarity)[nextInt(table.get(rarity).length)];
+    }
+
+    public List<ItemStack> getRandomItems(String lT) {
+
+        int itemCount = 0;
+        Map<String, ItemStack[]> table = masterTable.get(lT);
+        List<ItemStack> itemList = new ArrayList<>();
+
+        if (table == null) {
+            System.out.println("Loot table is empty");
+            return null;
+        }
+
+        for (String key : table.keySet()) {
+            itemCount += table.get(key).length;
+
+        }
+
+
+        return itemList;
+    }
+
+    public String[] getRarityList(String lT) {
+
+        List<String> instances = new ArrayList<>();
+        for (String r : rarityInstances.keySet()) {
+            for (String is : rarityInstances.get(r)) {
+                instances.add(is);
+                System.out.println(is);
+            }
+        }
+
+        return instances.toArray(new String[0]);
+    }
 }
