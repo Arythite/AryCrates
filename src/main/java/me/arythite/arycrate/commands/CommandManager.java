@@ -25,7 +25,7 @@ public class CommandManager implements CommandExecutor {
         if (sender instanceof Player) {
             p = (Player) sender;
         } else {
-            return false;
+            return true;
         }
 
         if (args.length == 0) {
