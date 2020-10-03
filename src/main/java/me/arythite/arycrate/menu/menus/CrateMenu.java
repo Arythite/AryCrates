@@ -1,5 +1,6 @@
 package me.arythite.arycrate.menu.menus;
 
+import me.arythite.arycrate.managers.CrateManager;
 import me.arythite.arycrate.menu.Menu;
 import me.arythite.arycrate.menu.PlayerMenuUtility;
 import org.bukkit.Material;
@@ -9,8 +10,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class CrateMenu extends Menu {
 
-    public CrateMenu(PlayerMenuUtility playerMenuUtility) {
+    CrateManager crateManager;
+
+    public CrateMenu(PlayerMenuUtility playerMenuUtility, CrateManager crateManager) {
         super(playerMenuUtility);
+        this.crateManager = crateManager;
     }
 
     @Override
@@ -25,11 +29,14 @@ public class CrateMenu extends Menu {
 
     @Override
     public void handleMenu(InventoryClickEvent e) {
+        e.setCancelled(true);
 
         switch ((e.getCurrentItem()).getType()) {
             case CHEST:
-            case GLASS:
-                e.setCancelled(true);
+                crateManager.getCrate(e.getCurrentItem().getItemMeta().getDisplayName());
+            case STAINED_GLASS:
+                if (e.getCurrentItem().getItemMeta().getDisplayName().contains("CLOSE"))
+                    e.getWhoClicked().closeInventory();
                 break;
         }
     }

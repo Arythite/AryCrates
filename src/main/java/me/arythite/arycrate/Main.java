@@ -8,6 +8,7 @@ import me.arythite.arycrate.listeners.MenuListener;
 import me.arythite.arycrate.managers.CrateManager;
 import me.arythite.arycrate.managers.LootManager;
 import me.arythite.arycrate.menu.PlayerMenuUtility;
+import me.arythite.arycrate.menu.menus.RewardMenu;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -22,12 +23,12 @@ public final class Main extends JavaPlugin {
     LootManager lootManager = new LootManager(rConfig);
     CrateConfig cConfig = new CrateConfig(this);
     CrateManager cManager = new CrateManager(cConfig);
-
+    RewardMenu rMenu;
     @Override
     public void onEnable() {
 
         loadItems();
-        getCommand("crate").setExecutor(new CommandManager(this));
+        getCommand("crate").setExecutor(new CommandManager(this, lootManager, cManager));
         getServer().getPluginManager().registerEvents(new MenuListener(), this);
         getServer().getPluginManager().registerEvents(new CrateListener(cManager, lootManager, this), this);
         lootManager.getRarityList("default");

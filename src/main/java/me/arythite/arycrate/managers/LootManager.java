@@ -3,10 +3,7 @@ package me.arythite.arycrate.managers;
 import me.arythite.arycrate.config.configs.RarityConfig;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.apache.commons.lang.math.RandomUtils.nextInt;
 
@@ -18,43 +15,39 @@ public class LootManager {
         this.config = config;
     }
 
-    // List of each rarity and lootTable
+    // Rarities in each loot table
     Map<String, String[]> rarities = new HashMap<>();
 
-    // LootTable with ItemStacks + The chance of each rarity
-    Map<String, ItemStack[]> lootTables = new HashMap<>();
+    // Each loot tables total percentage and
     Map<String, String> chances = new HashMap<>();
     Map<String, Integer> totalChance = new HashMap<>();
+    Map<String, ItemStack[]> lootTables = new HashMap<>();
+
+    // Rarity instances depending on chance
+    List<String> instances = new ArrayList<>();
+    Map<String, String[]> rarityInstances = new HashMap<>();
 
     // Items rarities and lootTables from the whole config file
     Map<String, Map<String, ItemStack[]>> masterTable = new HashMap<>();
 
-    // Rarity instances depending on chance
-    Map<String, String[]> rarityInstances = new HashMap<>();
-    List<String> instances = new ArrayList<>();
-
-    @SuppressWarnings({"ConstantConditions", "SuspiciousToArrayCall"})
+    @SuppressWarnings({"SuspiciousToArrayCall"})
     public void loadData() {
 
-        for (String lT : config.get().getConfigurationSection("").getKeys(false)) {
-            // Do this for every lootTable
-            rarities.put(lT, config.get().getConfigurationSection(lT + ".rarity").getKeys(false).toArray(new String[0]));
+        config.get().getConfigurationSection("").getKeys(false).forEach((lootTable) -> {
+            rarities.put(lootTable, config.get().getConfigurationSection(lootTable + ".rarity").getKeys(false).toArray(new String[0]));
             if (!rarities.isEmpty()) {
-                // Do this if lootTable contains rarities
-                for (String r : rarities.get(lT)) {
-                    // Do this for every rarity in every lootTable
-                    if (config.get().get(lT + ".rarity." + r + ".chance") != null) {
-                        chances.put(r, (config.get().get(lT + ".rarity." + r + ".chance")).toString());
+                for (String r : rarities.get(lootTable)) {
+                    if (config.get().get(lootTable + ".rarity." + r + ".chance") != null) {
+                        chances.put(r, (config.get().get(lootTable + ".rarity." + r + ".chance")).toString());
                     }
-                    if (config.get().get(lT + ".rarity." + r + ".items") != null) {
-                        lootTables.put(r, config.get().getList(lT + ".rarity." + r + ".items").toArray(new ItemStack[0]));
+                    if (config.get().get(lootTable + ".rarity." + r + ".items") != null) {
+                        lootTables.put(r, config.get().getList(lootTable + ".rarity." + r + ".items").toArray(new ItemStack[0]));
                     } else {
-                        System.out.println("No items found in " + r + " rarity in " + lT + " loot table");
+                        System.out.println("No items found in " + r + " rarity in " + lootTable + " loot table");
                     }
                 }
             }
             int t = 0;
-            // Setting up selecting random items
             for (String i : chances.keySet()) {
                 for (int j = 0; j < Integer.parseInt(chances.get(i)); j++) {
                     instances.add(i);
@@ -63,10 +56,10 @@ public class LootManager {
             }
             chances.clear();
 
-            rarityInstances.put(lT, instances.toArray(new String[0]));
-            totalChance.put(lT, t);
-            masterTable.put(lT, lootTables);
-        }
+            rarityInstances.put(lootTable, instances.toArray(new String[0]));
+            totalChance.put(lootTable, t);
+            masterTable.put(lootTable, lootTables);
+        });
         System.out.println("Done loading up loot tables");
     }
 
@@ -108,7 +101,6 @@ public class LootManager {
 
         for (String key : table.keySet()) {
             itemCount += table.get(key).length;
-
         }
 
 
@@ -119,12 +111,13 @@ public class LootManager {
 
         List<String> instances = new ArrayList<>();
         for (String r : rarityInstances.keySet()) {
-            for (String is : rarityInstances.get(r)) {
-                instances.add(is);
-                System.out.println(is);
-            }
+            instances.addAll(Arrays.asList(rarityInstances.get(r)));
         }
 
         return instances.toArray(new String[0]);
+    }
+
+    public int getTotalChance(String lT) {
+        return totalChance.get(lT);
     }
 }

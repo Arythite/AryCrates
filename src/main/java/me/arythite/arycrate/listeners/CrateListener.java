@@ -15,7 +15,7 @@ import org.bukkit.inventory.Inventory;
 
 public class CrateListener implements Listener {
 
-    CrateManager crateManager = new CrateManager();
+    CrateManager crateManager;
     Main main;
     LootManager lootManager;
 
@@ -41,7 +41,7 @@ public class CrateListener implements Listener {
                 crateManager.getCrates().forEach((crate) -> {
                     if (crate.getDisplayName().toLowerCase().equals(chest.getInventory().getTitle().toLowerCase())) {
                         e.setCancelled(true);
-                        new RewardMenu(main.getPlayerMenuUtility(p), lootManager, crate).open();
+                        new RewardMenu(main.getPlayerMenuUtility(p), lootManager, crate, main).open();
                         System.out.println("Opening rewards menu");
                     }
                 });

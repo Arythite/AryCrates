@@ -1,10 +1,8 @@
 package me.arythite.arycrate.managers;
 
-import me.arythite.arycrate.Crate;
 import me.arythite.arycrate.config.configs.CrateConfig;
-import org.bukkit.Bukkit;
+import me.arythite.arycrate.objects.Crate;
 import org.bukkit.Location;
-import org.bukkit.World;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +21,6 @@ public class CrateManager {
 
     public CrateManager(CrateConfig config) {
         this.config = config;
-    }
-
-    public CrateManager() {
     }
 
     List<Crate> crates = new ArrayList<>();
@@ -54,43 +49,22 @@ public class CrateManager {
                     case "key-name":
                         keyName = config.get().get(path).toString();
                         break;
-                    case "locations":
-                        config.get().getList(path).stream()
-                                .filter((location) -> (location instanceof String))
-                                .forEach((location) -> locations.add(deserializeLocation((String) location)));
-                        break;
                 }
             });
-            crates.add(new Crate(displayName, crateName, lootTable, animation, keyName, locations));
+            crates.add(new Crate(crateName, lootTable, animation, keyName));
         });
         System.out.println("Done loading up crates");
-    }
-
-    public String serializeLocation(Location loc) {
-        if (loc == null) {
-            return null;
-        }
-        return loc.getWorld().getName() + ":" + loc.getBlockX() + ":" + loc.getBlockY() + ":" + loc.getBlockZ();
-    }
-
-    public Location deserializeLocation(String s) {
-        String[] parts = s.split(":");
-        if (s.equals("")) {
-            return null;
-        } else {
-            if (parts.length == 4) {
-                World w = Bukkit.getServer().getWorld(parts[0]);
-                double x = Double.parseDouble(parts[1]);
-                double y = Double.parseDouble(parts[2]);
-                double z = Double.parseDouble(parts[3]);
-                return new Location(w, x, y, z);
-            }
-        }
-        return null;
     }
 
     public List<Crate> getCrates() {
         return crates;
     }
 
+    public Crate getCrate(String crateName) {
+        for (Crate crate : crates) {
+            if (crate.getCrateName().toLowerCase().equals(crateName.toLowerCase()))
+                return crate;
+        }
+        return null;
+    }
 }
