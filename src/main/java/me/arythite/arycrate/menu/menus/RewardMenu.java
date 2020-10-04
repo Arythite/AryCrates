@@ -73,9 +73,9 @@ public class RewardMenu extends Menu {
         inventory = Bukkit.createInventory(this, getSlots(), getMenuName());
         this.setMenuItems();
 
-        String[] rarities = lootManager.getRarityList(crate.getLootTable());
+        List<String> rarities = lootManager.getRarityList(crate.getLootTable());
         List<ItemStack> itemList = new ArrayList<>();
-        int startingIndex = rand.nextInt(rarities.length);
+        int startingIndex = rand.nextInt(rarities.size());
 
         double seconds = 5 + (3 * rand.nextDouble());
         System.out.println(seconds);

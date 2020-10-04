@@ -11,7 +11,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.Inventory;
 
 public class CrateListener implements Listener {
 
@@ -33,13 +32,11 @@ public class CrateListener implements Listener {
             return;
         if (e.getClickedBlock().getType() == Material.CHEST) {
             Chest chest = (Chest) e.getClickedBlock().getState();
-            Inventory chestInv = chest.getBlockInventory();
-            System.out.println("Clicked Chest Name: " + chest.getInventory().getName().toLowerCase());
             if (chest.getInventory().getTitle() == null)
                 return;
             if (crateManager.getCrates() != null) {
                 crateManager.getCrates().forEach((crate) -> {
-                    if (crate.getDisplayName().toLowerCase().equals(chest.getInventory().getTitle().toLowerCase())) {
+                    if (crate.getCrateName().toLowerCase().equals(chest.getInventory().getTitle().toLowerCase())) {
                         e.setCancelled(true);
                         new RewardMenu(main.getPlayerMenuUtility(p), lootManager, crate, main).open();
                         System.out.println("Opening rewards menu");

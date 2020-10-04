@@ -63,6 +63,18 @@ public class LootManager {
         System.out.println("Done loading up loot tables");
     }
 
+    public void addItem(String lT, String rarity, ItemStack item) {
+        List<String> list = config.get().getStringList(lT + ".rarity." + rarity + ".items");
+        list.add(item.toString());
+        config.get().set(lT + ".rarity." + rarity + ".items", list);
+    }
+
+    public void addTable(String name) {
+        config.get().getList(" ");
+        config.get().set(" ", name);
+        config.save();
+    }
+
     public ItemStack getRandomItem(String lT) {
 
         Map<String, ItemStack[]> table = masterTable.get(lT);
@@ -103,21 +115,38 @@ public class LootManager {
             itemCount += table.get(key).length;
         }
 
-
         return itemList;
     }
 
-    public String[] getRarityList(String lT) {
+    public List<String> getRarities(String lT) {
+        return new ArrayList<>(masterTable.get(lT).keySet());
+    }
+
+    public List<String> getRarityList(String lT) {
 
         List<String> instances = new ArrayList<>();
         for (String r : rarityInstances.keySet()) {
             instances.addAll(Arrays.asList(rarityInstances.get(r)));
         }
 
-        return instances.toArray(new String[0]);
+        return instances;
     }
 
     public int getTotalChance(String lT) {
         return totalChance.get(lT);
+    }
+
+    public List<String> getLootTables() {
+        return new ArrayList<>(masterTable.keySet());
+    }
+
+    public String getLootTable(String lT) {
+        for (String key : masterTable.keySet()) {
+            if (key.equals(lT)) {
+                return key;
+            }
+        }
+
+        return null;
     }
 }

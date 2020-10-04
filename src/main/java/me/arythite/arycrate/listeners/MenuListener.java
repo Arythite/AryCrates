@@ -1,6 +1,7 @@
 package me.arythite.arycrate.listeners;
 
 import me.arythite.arycrate.menu.Menu;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,7 +25,7 @@ public class MenuListener implements Listener {
         if (holder instanceof Menu) {
             e.setCancelled(true);
 
-            if (e.getCurrentItem() == null) {
+            if (e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR) {
                 return;
             }
 
