@@ -5,6 +5,7 @@ import me.arythite.arycrate.menu.Menu;
 import me.arythite.arycrate.menu.PlayerMenuUtility;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -29,8 +30,6 @@ public class CrateMenu extends Menu {
 
     @Override
     public void handleMenu(InventoryClickEvent e) {
-        e.setCancelled(true);
-
         switch ((e.getCurrentItem()).getType()) {
             case CHEST:
                 crateManager.getCrate(e.getCurrentItem().getItemMeta().getDisplayName());
@@ -39,6 +38,11 @@ public class CrateMenu extends Menu {
                     e.getWhoClicked().closeInventory();
                 break;
         }
+    }
+
+    @Override
+    public void handleClose(InventoryCloseEvent e) {
+
     }
 
     @Override

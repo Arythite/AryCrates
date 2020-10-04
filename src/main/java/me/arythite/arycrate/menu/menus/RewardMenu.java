@@ -11,6 +11,7 @@ import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -48,6 +49,11 @@ public class RewardMenu extends Menu {
     @Override
     public void handleMenu(InventoryClickEvent e) {
         e.setCancelled(true);
+    }
+
+    @Override
+    public void handleClose(InventoryCloseEvent e) {
+
     }
 
     @Override
@@ -103,15 +109,24 @@ public class RewardMenu extends Menu {
                 if (running = false)
                     return;
                 ticks++;
-                delay += 1 / (20 * seconds);
+                delay += 1 / (20 * seconds * 2);
                 if (ticks > delay * 20) {
                     ticks = 0;
                     for (int is = 9; is < 18; is++) {
                         inventory.setItem(is, itemList.get((is + itemIndex) % itemList.size()));
                     }
+                    playerMenuUtility.getOwner().playSound(playerMenuUtility.getOwner().getLocation(), Sound.CLICK, 2, 250);
                     itemIndex++;
-                    if (delay >= .9) {
+                    if (delay >= .5) {
                         running = false;
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                Player p = playerMenuUtility.getOwner();
+                                p.playSound(p.getLocation(), Sound.ANVIL_BREAK, 2, 15);
+                            }
+
+                        }.runTaskLater(Main.getPlugin(Main.class), 10);
                         new BukkitRunnable() {
                             @Override
                             public void run() {

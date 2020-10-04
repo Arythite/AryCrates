@@ -51,7 +51,7 @@ public class CrateManager {
                         break;
                 }
             });
-            crates.add(new Crate(crateName, lootTable, animation, keyName));
+            crates.add(new Crate(crateName, lootTable, animation, keyName, displayName));
         });
         System.out.println("Done loading up crates");
     }

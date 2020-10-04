@@ -3,6 +3,7 @@ package me.arythite.arycrate.menu.menus;
 import me.arythite.arycrate.menu.Menu;
 import me.arythite.arycrate.menu.PlayerMenuUtility;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 
 public class RarityMenu extends Menu {
 
@@ -22,6 +23,11 @@ public class RarityMenu extends Menu {
 
     @Override
     public void handleMenu(InventoryClickEvent e) {
+
+    }
+
+    @Override
+    public void handleClose(InventoryCloseEvent e) {
 
     }
 

@@ -36,7 +36,7 @@ public class CrateListener implements Listener {
                 return;
             if (crateManager.getCrates() != null) {
                 crateManager.getCrates().forEach((crate) -> {
-                    if (crate.getCrateName().toLowerCase().equals(chest.getInventory().getTitle().toLowerCase())) {
+                    if (crate.getDisplayName().toLowerCase().equals(chest.getInventory().getTitle().toLowerCase())) {
                         e.setCancelled(true);
                         new RewardMenu(main.getPlayerMenuUtility(p), lootManager, crate, main).open();
                         System.out.println("Opening rewards menu");

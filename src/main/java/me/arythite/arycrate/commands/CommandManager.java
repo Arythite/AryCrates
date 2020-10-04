@@ -3,13 +3,16 @@ package me.arythite.arycrate.commands;
 import me.arythite.arycrate.Main;
 import me.arythite.arycrate.managers.CrateManager;
 import me.arythite.arycrate.managers.LootManager;
-import me.arythite.arycrate.menu.menus.EditCrateMenu;
 import me.arythite.arycrate.menu.menus.LootTableMenu;
 import me.arythite.arycrate.objects.Crate;
+import me.arythite.arycrate.unused.EditCrateMenu;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class CommandManager implements CommandExecutor {
 
@@ -50,6 +53,20 @@ public class CommandManager implements CommandExecutor {
                     }
                 } else {
                     p.sendMessage("crate edit <loot/crate>");
+                }
+            }
+            if (args[0].equals("give")) {
+                if (args.length >= 2) {
+
+                    Crate crate = crateManager.getCrate(args[1]);
+                    ItemStack chest = new ItemStack(Material.CHEST);
+                    ItemMeta crateMeta = chest.getItemMeta();
+                    crateMeta.setDisplayName(crate.getDisplayName());
+                    chest.setItemMeta(crateMeta);
+
+                    p.getInventory().addItem(chest);
+                } else {
+                    p.sendMessage("crate give <cratename>");
                 }
             }
         }

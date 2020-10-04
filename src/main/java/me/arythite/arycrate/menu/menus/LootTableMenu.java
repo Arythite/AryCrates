@@ -5,6 +5,7 @@ import me.arythite.arycrate.menu.Menu;
 import me.arythite.arycrate.menu.PlayerMenuUtility;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -35,10 +36,15 @@ public class LootTableMenu extends Menu {
         } else if (e.getCurrentItem().equals(new ItemStack(Material.BARRIER))) {
 
         } else if (e.getCurrentItem().equals(new ItemStack(Material.CHEST))) {
-            lootManager.addTable("Default2");
+            lootManager.addTable();
         } else {
-            new EditLootTableMenu(playerMenuUtility, lootManager, e.getCurrentItem().getItemMeta().getDisplayName()).open();
+            new EditRaritiesMenu(playerMenuUtility, lootManager, e.getCurrentItem().getItemMeta().getDisplayName()).open();
         }
+    }
+
+    @Override
+    public void handleClose(InventoryCloseEvent e) {
+
     }
 
     @Override

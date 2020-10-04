@@ -2,16 +2,23 @@ package me.arythite.arycrate.objects;
 
 public class Crate {
 
+    String displayName;
     String crateName;
     String lootTable;
     String animation;
     String keyName;
 
-    public Crate(String crateName, String lootTable, String animation, String keyName) {
+
+    public Crate(String crateName, String lootTable, String animation, String keyName, String displayName) {
+        this.displayName = displayName;
         this.crateName = crateName;
         this.lootTable = lootTable;
         this.animation = animation;
         this.keyName = keyName;
+    }
+
+    public String getDisplayName() {
+        return displayName;
     }
 
     public String getCrateName() {
@@ -37,6 +44,10 @@ public class Crate {
         setKeyName(keyName);
     }
 
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
     public void setLootTable(String lootTable) {
         this.lootTable = lootTable;
     }
@@ -52,4 +63,5 @@ public class Crate {
     public void setCrateName(String crateName) {
         this.crateName = crateName;
     }
+
 }

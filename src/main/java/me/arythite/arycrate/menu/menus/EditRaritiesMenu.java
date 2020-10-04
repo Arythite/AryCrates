@@ -5,14 +5,15 @@ import me.arythite.arycrate.menu.Menu;
 import me.arythite.arycrate.menu.PlayerMenuUtility;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class EditLootTableMenu extends Menu {
+public class EditRaritiesMenu extends Menu {
     LootManager lootManager;
     String lT;
 
-    public EditLootTableMenu(PlayerMenuUtility playerMenuUtility, LootManager lootManager, String lT) {
+    public EditRaritiesMenu(PlayerMenuUtility playerMenuUtility, LootManager lootManager, String lT) {
         super(playerMenuUtility);
         this.lootManager = lootManager;
         this.lT = lT;
@@ -20,7 +21,7 @@ public class EditLootTableMenu extends Menu {
 
     @Override
     public String getMenuName() {
-        return "Edit Loot Table";
+        return "Edit Rarities";
     }
 
     @Override
@@ -30,6 +31,25 @@ public class EditLootTableMenu extends Menu {
 
     @Override
     public void handleMenu(InventoryClickEvent e) {
+
+        switch (e.getCurrentItem().getType()) {
+            case ENDER_CHEST:
+                new EditItemsMenu(playerMenuUtility, lootManager, lT, e.getCurrentItem().getItemMeta().getDisplayName()).open();
+                break;
+            case EMERALD:
+                e.getWhoClicked().closeInventory();
+                break;
+            case BARRIER:
+                break;
+            case CHEST:
+                lootManager.addRarity(lT);
+                break;
+        }
+
+    }
+
+    @Override
+    public void handleClose(InventoryCloseEvent e) {
 
     }
 
@@ -44,6 +64,13 @@ public class EditLootTableMenu extends Menu {
             rarity.setItemMeta(rarityMeta);
             inventory.setItem(i, rarity);
         }
+
+        for (int i = 45; i < 54; i++) {
+            inventory.setItem(i, new ItemStack(Material.THIN_GLASS));
+        }
+
+        inventory.setItem(49, new ItemStack(Material.EMERALD));
+        inventory.setItem(53, new ItemStack(Material.CHEST));
 
     }
 }
