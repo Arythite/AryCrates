@@ -40,8 +40,6 @@ public class CommandManager implements CommandExecutor {
                 if (args.length >= 2) {
                     if (args[1].equals("loot")) {
                         new LootTableMenu(main.getPlayerMenuUtility(p), lootManager).open();
-                    } else if (args[1].equals("crate")) {
-
                     }
                 } else {
                     p.sendMessage("§ccrate edit <loot/crate>");

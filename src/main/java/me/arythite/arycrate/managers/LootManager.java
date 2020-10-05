@@ -32,8 +32,8 @@ public class LootManager {
     Map<String, Map<String, List<ItemStack>>> masterTable = new HashMap<>();
 
     // Used for creating lootTables and rarities
-    int i = 0;
-    int r = 0;
+    int i = nextInt(10000000);
+    int r = nextInt(10000000);
 
     @SuppressWarnings({"SuspiciousToArrayCall"})
     public void loadData() {
@@ -98,7 +98,7 @@ public class LootManager {
 
         list.forEach((rarity) -> {
             config.get().set(lT + ".rarity." + rarity + ".chance", 1);
-            config.get().set(lT + ".rarity." + rarity + ".items", new ArrayList<>(Arrays.asList(new ItemStack(Material.ICE))));
+            config.get().set(lT + ".rarity." + rarity + ".items", new ArrayList<>());
         });
 
         config.save();

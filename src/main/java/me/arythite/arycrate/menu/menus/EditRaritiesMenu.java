@@ -59,6 +59,11 @@ public class EditRaritiesMenu extends Menu {
         ItemStack rarity = new ItemStack(Material.ENDER_CHEST);
         ItemMeta rarityMeta = rarity.getItemMeta();
 
+        ItemStack add = new ItemStack(Material.CHEST);
+        ItemMeta addMeta = add.getItemMeta();
+        addMeta.setDisplayName("§aAdd Rarity");
+        add.setItemMeta(addMeta);
+
         for (int i = 0; i < lootManager.getRarities(lT).size(); i++) {
             rarityMeta.setDisplayName(lootManager.getRarities(lT).get(i));
             rarity.setItemMeta(rarityMeta);
@@ -69,8 +74,7 @@ public class EditRaritiesMenu extends Menu {
             inventory.setItem(i, new ItemStack(Material.THIN_GLASS));
         }
 
-        inventory.setItem(49, new ItemStack(Material.EMERALD));
-        inventory.setItem(53, new ItemStack(Material.CHEST));
+        inventory.setItem(49, add);
 
     }
 }

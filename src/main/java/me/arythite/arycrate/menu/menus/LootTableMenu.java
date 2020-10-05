@@ -37,6 +37,7 @@ public class LootTableMenu extends Menu {
 
         } else if (e.getCurrentItem().equals(new ItemStack(Material.CHEST))) {
             lootManager.addTable();
+            this.setMenuItems();
         } else {
             new EditRaritiesMenu(playerMenuUtility, lootManager, e.getCurrentItem().getItemMeta().getDisplayName()).open();
         }
@@ -49,9 +50,15 @@ public class LootTableMenu extends Menu {
 
     @Override
     public void setMenuItems() {
+        lootManager.loadData();
 
         ItemStack table = new ItemStack(Material.STORAGE_MINECART);
         ItemMeta tableMeta = table.getItemMeta();
+
+        ItemStack add = new ItemStack(Material.CHEST);
+        ItemMeta addMeta = add.getItemMeta();
+        addMeta.setDisplayName("§aAdd Loot Table");
+        add.setItemMeta(addMeta);
 
         for (int k = 0; k < lootManager.getLootTables().size(); k++) {
             tableMeta.setDisplayName(lootManager.getLootTables().get(k));
@@ -63,7 +70,6 @@ public class LootTableMenu extends Menu {
             inventory.setItem(i, new ItemStack(Material.THIN_GLASS));
         }
 
-        inventory.setItem(49, new ItemStack(Material.EMERALD));
-        inventory.setItem(53, new ItemStack(Material.CHEST));
+        inventory.setItem(49, add);
     }
 }
