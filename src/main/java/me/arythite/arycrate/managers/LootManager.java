@@ -37,17 +37,12 @@ public class LootManager {
 
     @SuppressWarnings({"SuspiciousToArrayCall"})
     public void loadData() {
+        clear();
 
-        rarities.clear();
-        chances.clear();
-        totalChance.clear();
-        lootTables.clear();
-        instances.clear();
-        rarityInstances.clear();
-        masterTable.clear();
+        for (String lootTable : config.get().getConfigurationSection("").getKeys(false)) {
 
-        config.get().getConfigurationSection("").getKeys(false).forEach((lootTable) -> {
-            rarities.put(lootTable, new ArrayList<>(config.get().getConfigurationSection(lootTable + ".rarity").getKeys(false)));
+            lootTables = new HashMap<>();
+            rarities.put(lootTable, Arrays.asList(config.get().getConfigurationSection(lootTable + ".rarity").getKeys(false).toArray(new String[0])));
             if (!rarities.isEmpty()) {
                 for (String r : rarities.get(lootTable)) {
                     if (config.get().get(lootTable + ".rarity." + r + ".chance") != null) {
@@ -57,10 +52,10 @@ public class LootManager {
                         lootTables.put(r, (List<ItemStack>) config.get().getList(lootTable + ".rarity." + r + ".items"));
                     } else {
                         lootTables.put(r, Arrays.asList(new ItemStack(Material.ICE)));
-                        System.out.println("No items found in " + r + " rarity in " + lootTable + " loot table, putting default item");
                     }
                 }
             }
+
             int t = 0;
             for (String i : chances.keySet()) {
                 for (int j = 0; j < Integer.parseInt(chances.get(i)); j++) {
@@ -73,7 +68,17 @@ public class LootManager {
             rarityInstances.put(lootTable, instances);
             totalChance.put(lootTable, t);
             masterTable.put(lootTable, lootTables);
-        });
+        }
+    }
+
+    public void clear() {
+        rarities.clear();
+        chances.clear();
+        totalChance.clear();
+        lootTables.clear();
+        instances.clear();
+        rarityInstances.clear();
+        masterTable.clear();
     }
 
     public void addItem(String lT, String rarity, ItemStack item) {
@@ -133,7 +138,6 @@ public class LootManager {
     }
 
     public List<ItemStack> getItemsFromRarity(String lT, String rarity) {
-        System.out.println(masterTable.get(lT).get(rarity));
         return masterTable.get(lT).get(rarity);
     }
 

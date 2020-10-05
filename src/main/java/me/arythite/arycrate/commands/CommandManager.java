@@ -4,8 +4,7 @@ import me.arythite.arycrate.Main;
 import me.arythite.arycrate.managers.CrateManager;
 import me.arythite.arycrate.managers.LootManager;
 import me.arythite.arycrate.menu.menus.LootTableMenu;
-import me.arythite.arycrate.objects.Crate;
-import me.arythite.arycrate.unused.EditCrateMenu;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -36,13 +35,6 @@ public class CommandManager implements CommandExecutor {
             return true;
         }
 
-        if (args.length == 0) {
-            Crate newCrate = crateManager.getCrate("def");
-            EditCrateMenu editCrateMenu = new EditCrateMenu(main.getPlayerMenuUtility(p), crateManager);
-            editCrateMenu.open();
-        }
-        p.sendMessage(String.valueOf(args.length));
-
         if (args.length >= 1) {
             if (args[0].equals("edit")) {
                 if (args.length >= 2) {
@@ -52,23 +44,52 @@ public class CommandManager implements CommandExecutor {
 
                     }
                 } else {
-                    p.sendMessage("crate edit <loot/crate>");
+                    p.sendMessage("§ccrate edit <loot/crate>");
                 }
             }
             if (args[0].equals("give")) {
                 if (args.length >= 2) {
+                    if (args.length >= 3) {
+                        if (Bukkit.getPlayer(args[1]) != null) {
+                            if (args.length >= 4) {
+                                /// crate give Arythite def key
+                                ItemStack key = new ItemStack(Material.TRIPWIRE_HOOK);
+                                ItemMeta keyMeta = key.getItemMeta();
+                                if (crateManager.getCrate(args[2]) == null) {
+                                    return true;
+                                }
+                                keyMeta.setDisplayName(crateManager.getCrate(args[2]).getKeyName());
+                                key.setItemMeta(keyMeta);
 
-                    Crate crate = crateManager.getCrate(args[1]);
-                    ItemStack chest = new ItemStack(Material.CHEST);
-                    ItemMeta crateMeta = chest.getItemMeta();
-                    crateMeta.setDisplayName(crate.getDisplayName());
-                    chest.setItemMeta(crateMeta);
+                                ItemStack chest = new ItemStack(Material.CHEST);
+                                ItemMeta crateMeta = chest.getItemMeta();
+                                crateMeta.setDisplayName(crateManager.getCrate(args[2]).getDisplayName());
+                                chest.setItemMeta(crateMeta);
 
-                    p.getInventory().addItem(chest);
+                                if (keyMeta.getDisplayName() == null)
+                                    return true;
+
+                                if (args[3].equals("key")) {
+                                    p.getInventory().addItem(key);
+                                } else if (args[3].equals("crate")) {
+                                    p.getInventory().addItem(chest);
+                                } else {
+                                    p.sendMessage("§ccrate give <player> <cratename> <crate/key>");
+                                }
+
+                            } else {
+                                p.sendMessage("§ccrate give <player> <cratename> <crate/key>");
+                            }
+                        } else {
+                            p.sendMessage("§cNot a valid player");
+                        }
+                    }
                 } else {
-                    p.sendMessage("crate give <cratename>");
+                    p.sendMessage("§ccrate give <player> <cratename>");
                 }
             }
+        } else {
+            p.sendMessage("§ccrate <edit/give>");
         }
 
         return true;

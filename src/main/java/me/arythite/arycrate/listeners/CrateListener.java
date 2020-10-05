@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class CrateListener implements Listener {
 
@@ -36,10 +37,25 @@ public class CrateListener implements Listener {
                 return;
             if (crateManager.getCrates() != null) {
                 crateManager.getCrates().forEach((crate) -> {
-                    if (crate.getDisplayName().toLowerCase().equals(chest.getInventory().getTitle().toLowerCase())) {
+                    if (crate.getDisplayName().toLowerCase().equals(chest.getInventory().getTitle().toLowerCase()))
                         e.setCancelled(true);
+
+                    if (e.getPlayer().getItemInHand() == null) {
+                        return;
+                    } else if (!e.getPlayer().getItemInHand().hasItemMeta()) {
+                        return;
+                    } else if (!e.getPlayer().getItemInHand().getItemMeta().hasDisplayName()) {
+                        return;
+                    }
+
+                    if (crate.getKeyName().toLowerCase().equals(e.getPlayer().getItemInHand().getItemMeta().getDisplayName())) {
+                        ItemStack itemInHand = e.getPlayer().getItemInHand();
+                        itemInHand.setAmount(itemInHand.getAmount() - 1);
+                        e.getPlayer().setItemInHand(itemInHand);
                         new RewardMenu(main.getPlayerMenuUtility(p), lootManager, crate, main).open();
-                        System.out.println("Opening rewards menu");
+                        e.getPlayer().sendMessage("§aOpening crate");
+                    } else {
+
                     }
                 });
             }

@@ -43,7 +43,6 @@ public class EditItemsMenu extends Menu {
 
     @Override
     public void handleClose(InventoryCloseEvent e) {
-        playerMenuUtility.getOwner().sendMessage("LT: " + lT + " R: " + rarity);
         List<ItemStack> contents = new ArrayList<>();
         for (ItemStack item : inventory.getContents()) {
             if (item != null) {
