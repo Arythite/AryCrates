@@ -37,53 +37,53 @@ public class CommandManager implements CommandExecutor {
 
         if (args.length >= 1) {
             if (args[0].equals("edit")) {
-                if (args.length >= 2) {
-                    if (args[1].equals("loot")) {
-                        new LootTableMenu(main.getPlayerMenuUtility(p), lootManager).open();
-                    }
-                } else {
-                    p.sendMessage("§ccrate edit <loot/crate>");
-                }
+                if (p.hasPermission("acrate.edit"))
+                    new LootTableMenu(main.getPlayerMenuUtility(p), lootManager).open();
+                else
+                    p.sendMessage("§cYou do not have permission to run this command");
             }
             if (args[0].equals("give")) {
-                if (args.length >= 2) {
-                    if (args.length >= 3) {
-                        if (Bukkit.getPlayer(args[1]) != null) {
-                            if (args.length >= 4) {
-                                /// crate give Arythite def key
-                                ItemStack key = new ItemStack(Material.TRIPWIRE_HOOK);
-                                ItemMeta keyMeta = key.getItemMeta();
-                                if (crateManager.getCrate(args[2]) == null) {
-                                    return true;
-                                }
-                                keyMeta.setDisplayName(crateManager.getCrate(args[2]).getKeyName());
-                                key.setItemMeta(keyMeta);
+                if (p.hasPermission("acrate.give")) {
+                    if (args.length >= 2) {
+                        if (args.length >= 3) {
+                            if (Bukkit.getPlayer(args[1]) != null) {
+                                if (args.length >= 4) {
+                                    ItemStack key = new ItemStack(Material.TRIPWIRE_HOOK);
+                                    ItemMeta keyMeta = key.getItemMeta();
+                                    if (crateManager.getCrate(args[2]) == null) {
+                                        return true;
+                                    }
+                                    keyMeta.setDisplayName(crateManager.getCrate(args[2]).getKeyName());
+                                    key.setItemMeta(keyMeta);
 
-                                ItemStack chest = new ItemStack(Material.CHEST);
-                                ItemMeta crateMeta = chest.getItemMeta();
-                                crateMeta.setDisplayName(crateManager.getCrate(args[2]).getDisplayName());
-                                chest.setItemMeta(crateMeta);
+                                    ItemStack chest = new ItemStack(Material.CHEST);
+                                    ItemMeta crateMeta = chest.getItemMeta();
+                                    crateMeta.setDisplayName(crateManager.getCrate(args[2]).getDisplayName());
+                                    chest.setItemMeta(crateMeta);
 
-                                if (keyMeta.getDisplayName() == null)
-                                    return true;
+                                    if (keyMeta.getDisplayName() == null)
+                                        return true;
 
-                                if (args[3].equals("key")) {
-                                    p.getInventory().addItem(key);
-                                } else if (args[3].equals("crate")) {
-                                    p.getInventory().addItem(chest);
+                                    if (args[3].equals("key")) {
+                                        p.getInventory().addItem(key);
+                                    } else if (args[3].equals("crate")) {
+                                        p.getInventory().addItem(chest);
+                                    } else {
+                                        p.sendMessage("§ccrate give <player> <cratename> <crate/key>");
+                                    }
+
                                 } else {
                                     p.sendMessage("§ccrate give <player> <cratename> <crate/key>");
                                 }
-
                             } else {
-                                p.sendMessage("§ccrate give <player> <cratename> <crate/key>");
+                                p.sendMessage("§cNot a valid player");
                             }
-                        } else {
-                            p.sendMessage("§cNot a valid player");
                         }
+                    } else {
+                        p.sendMessage("§ccrate give <player> <cratename>");
                     }
                 } else {
-                    p.sendMessage("§ccrate give <player> <cratename>");
+                    p.sendMessage("§cYou do not have permission to run this command");
                 }
             }
         } else {

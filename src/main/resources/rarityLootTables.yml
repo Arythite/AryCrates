@@ -2,10 +2,10 @@ default:
   rarity:
     common:
       chance: 80
-      items:
+      items: [ ]
     epic:
       chance: 80
-      items:
+      items: [ ]
     legendary:
       chance: 80
-      items:
+      items: [ ]

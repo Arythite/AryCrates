@@ -31,15 +31,20 @@ public class LootTableMenu extends Menu {
     public void handleMenu(InventoryClickEvent e) {
         e.setCancelled(true);
 
-        if (e.getCurrentItem().equals(new ItemStack(Material.EMERALD))) {
-            e.getWhoClicked().closeInventory();
-        } else if (e.getCurrentItem().equals(new ItemStack(Material.BARRIER))) {
+        switch (e.getCurrentItem().getType()) {
+            case EMERALD:
+                e.getWhoClicked().closeInventory();
+                break;
+            case BARRIER:
 
-        } else if (e.getCurrentItem().equals(new ItemStack(Material.CHEST))) {
-            lootManager.addTable();
-            this.setMenuItems();
-        } else {
-            new EditRaritiesMenu(playerMenuUtility, lootManager, e.getCurrentItem().getItemMeta().getDisplayName()).open();
+                break;
+            case CHEST:
+                lootManager.addTable();
+                this.setMenuItems();
+                break;
+            case STORAGE_MINECART:
+                new EditRaritiesMenu(playerMenuUtility, lootManager, e.getCurrentItem().getItemMeta().getDisplayName()).open();
+                break;
         }
     }
 

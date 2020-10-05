@@ -9,6 +9,9 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EditRaritiesMenu extends Menu {
     LootManager lootManager;
     String lT;
@@ -43,6 +46,7 @@ public class EditRaritiesMenu extends Menu {
                 break;
             case CHEST:
                 lootManager.addRarity(lT);
+                this.setMenuItems();
                 break;
         }
 
@@ -63,9 +67,13 @@ public class EditRaritiesMenu extends Menu {
         ItemMeta addMeta = add.getItemMeta();
         addMeta.setDisplayName("§aAdd Rarity");
         add.setItemMeta(addMeta);
-
-        for (int i = 0; i < lootManager.getRarities(lT).size(); i++) {
-            rarityMeta.setDisplayName(lootManager.getRarities(lT).get(i));
+        if (lootManager.getRarities(lT) == null)
+            return;
+        List<String> rarities = new ArrayList<>(lootManager.getRarities(lT));
+        if (rarities.isEmpty())
+            return;
+        for (int i = 0; i < rarities.size(); i++) {
+            rarityMeta.setDisplayName(rarities.get(i));
             rarity.setItemMeta(rarityMeta);
             inventory.setItem(i, rarity);
         }

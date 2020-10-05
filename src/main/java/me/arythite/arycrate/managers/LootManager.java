@@ -172,6 +172,10 @@ public class LootManager {
     }
 
     public List<String> getRarities(String lT) {
+        if (masterTable.isEmpty())
+            return null;
+        else if (masterTable.get(lT) == null)
+            return null;
         return new ArrayList<>(masterTable.get(lT).keySet());
     }
 
